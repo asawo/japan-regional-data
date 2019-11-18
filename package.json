@@ -1,0 +1,23 @@
+{
+  "name": "resas-japan",
+  "version": "1.0.0",
+  "description": "A website to explore Japan's regional data provided by [RESAS](https://resas.go.jp)",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asawo/japan-regional-data.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asawo/japan-regional-data/issues"
+  },
+  "homepage": "https://github.com/asawo/japan-regional-data#readme"
+}
