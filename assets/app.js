@@ -1,5 +1,5 @@
-import * as API_KEY from "/config.js";
+import * as env from "/env.js";
 
-const keyObject = JSON.stringify(API_KEY, null, " ");
+const API_KEY = JSON.stringify(env, null, " ");
 
-console.log(keyObject);
+console.log(API_KEY);
