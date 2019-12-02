@@ -44,17 +44,15 @@ getPrefectures
   })
   .then(data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
+    console.log(data.result);
   });
 
 function loadDropdown(data) {
   const prefectures = data.result
     .map(prefs => `<option>${prefs.prefName}</option>`)
     .join("\n");
-
   return `<select>${prefectures}</select>`;
 }
-
-prefectureDropdown.innerHTML = prefectures;
 // function loadDropdown() {
 //   fetch(prefectureURL, {
 //     headers: headerEnv
