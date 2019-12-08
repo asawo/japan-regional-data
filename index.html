@@ -10,20 +10,39 @@
       href="https://bootswatch.com/4/minty/bootstrap.min.css"
     />
     <link rel="stylesheet" type="text/css" href="assets/main.css" />
+    <script src="https://use.fontawesome.com/fdfdb554d9.js"></script>
     <title>Japan's regional data</title>
   </head>
 
   <body>
+    <nav class="navbar navbar-dark bg-primary mb3">
+      <div class="container">
+        <a href="#" class="navbar-brand">Japan's Regional Data</a>
+      </div>
+    </nav>
 
-    <nav class="navbar navbar-dark bg-primary mb3"><div class="container"><a href="#" class="navbar-brand">Japan's Regional Data</div></nav>
-   
- 
     <div class="container-fluid mt-3">
-      <select class="custom-select custom-select-lg mb-3" id="prefectureDropdown" name="Select region">
+      <select
+        class="custom-select"
+        id="prefectureDropdown"
+        name="Select region"
+      >
         <option value="1">Loading...</option>
       </select>
     </div>
 
+    <div id="graph"></div>
+
+    <footer class="mt-5 p-3 text-center bg-light">
+      <span
+        >Data provided by
+        <a href="https://opendata.resas-portal.go.jp/">RESAS</a>
+        created by asawo
+        <a href="https://github.com/asawo/tictactoe">
+          <i class="fa fa-github"></i>
+        </a>
+      </span>
+    </footer>
 
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -41,7 +60,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="assets/app.js" type="module"></script>
-    
   </body>
-
 </html>
