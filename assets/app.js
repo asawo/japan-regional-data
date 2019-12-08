@@ -11,37 +11,13 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // 3. Make a get request to RESAS API ✅
 
-// make into a function --> define all functions, then call them
-
-// make a fetch
-
-function fetchData(url) {
-  fetch(url, {
-    headers: headerEnv
-  })
-    .then(res => res.json())
-    .then(data => {
-      listOfPrefectures = data;
-    })
-    .catch(err => reject(err));
-}
-
-// read about async and sync requests https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Synchronous_and_Asynchronous_Requests
-
-// then read async await to make sure the data is received
-
-let listOfPrefectures = "loading";
 const prefectureURL = "https://opendata.resas-portal.go.jp/api/v1/prefectures",
   prefectureDropdown = document.querySelector("#prefectureDropdown");
 
 const getPrefectures = fetch(prefectureURL, {
   headers: headerEnv
-});
-
-getPrefectures
-  .then(response => {
-    return response.json();
-  })
+})
+  .then(res => res.json())
   .then(data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
     console.log(data.result);
@@ -53,17 +29,16 @@ function loadDropdown(data) {
     .join("\n");
   return `<select>${prefectures}</select>`;
 }
-// function loadDropdown() {
-//   fetch(prefectureURL, {
-//     headers: headerEnv
-//   })
-//     .then(res => res.json())
-//     .then(data => {
-//       listOfPrefectures = data;
-//     })
-//     .catch(err => reject(err));
-
-//   prefectureDropdown.innerHTML = listOfPrefectures;
-// }
 
 // document.addEventListener("DOMContentLoaded", loadDropdown);
+// prefectureDropdown.addEventListener(onselect, function() {
+//   console.log(EventSource);
+// });
+
+// Simpler basic GET function
+// async function get(url) {
+//   const response = await fetch(url, { headers: headerEnv });
+//   const resData = await response.json();
+//   return resData;
+// }
+// console.log(get(prefectureURL));
