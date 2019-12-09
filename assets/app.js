@@ -38,6 +38,14 @@ function loadDropdown(data) {
 getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
   data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
+    // populate graph with initial data
+    getPrefData(
+      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1"
+    ).then(data => {
+      let population = data.result.data[0].data;
+
+      loadChart(population);
+    });
   }
 );
 
@@ -51,42 +59,67 @@ async function getPrefData(url) {
 }
 
 // Load prefecture data into chart
-// function loadChart(data) {
-//   const populationData = data.result.bar.data
-//     .map(
-//       prefs =>
-//         `<option class="prefecture" value="${prefs.prefCode}">${prefs.prefName}</option>`
-//     )
-//     .join("\n");
-//   return `<select>${prefectures}</select>`;
-// }
+function loadChart(data) {
+  let years = [];
+  data.forEach(year => years.push(year.year));
 
-// Apply event listeners to the dropdown list
+  let populationData = [];
+  data.forEach(population => populationData.push(population.value));
+
+  chart.config.data.labels = years;
+  chart.config.data.datasets[0].data = populationData;
+
+  chart.chart.update();
+
+  // console.log(chart.config.data);
+}
+
+// Event listeners
 prefectureDropdown.addEventListener("change", function(e) {
   const prefCode = e.target.value;
   getPrefData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
   ).then(data => {
     let population = data.result.data[0].data;
-    // call the function loadChart to insert data.result.bar.data into graph
-    console.log(population);
+
+    loadChart(population);
   });
+});
+
+window.addEventListener("load", event => {
+  console.log();
 });
 
 // Fake graph data
 const ctx = document.getElementById("myChart").getContext("2d");
 const chart = new Chart(ctx, {
-  type: "line",
+  type: "bar",
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: [],
     datasets: [
       {
-        label: "Fake data",
+        label: ["Population"],
         backgroundColor: "rgba(255, 130, 153, 0.2)",
         borderColor: "rgba(255, 130, 153)",
-        data: [0, 10, 5, 2, 20, 30, 35]
+        data: []
       }
     ]
   },
-  options: {}
+  options: {
+    responsive: true,
+    hover: {
+      mode: "label"
+    },
+    scales: {
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    },
+    maintainAspectRatio: true
+  }
 });
