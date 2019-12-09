@@ -13,8 +13,8 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // 3. Make a get request to RESAS API ✅
 
-// Get prefecture list
-async function getPrefectures(url) {
+// Function to get prefecture list
+async function getPrefList(url) {
   let response = await fetch(url, {
     headers: headerEnv
   });
@@ -35,16 +35,42 @@ function loadDropdown(data) {
   return `<select>${prefectures}</select>`;
 }
 
-getPrefectures("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
+getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
   data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
   }
 );
 
+// Get prefecture data
+async function getPrefData(url) {
+  let response = await fetch(url, {
+    headers: headerEnv
+  });
+  let data = await response.json();
+  return data;
+}
+
+// Load prefecture data into chart
+// function loadChart(data) {
+//   const populationData = data.result.bar.data
+//     .map(
+//       prefs =>
+//         `<option class="prefecture" value="${prefs.prefCode}">${prefs.prefName}</option>`
+//     )
+//     .join("\n");
+//   return `<select>${prefectures}</select>`;
+// }
+
 // Apply event listeners to the dropdown list
 prefectureDropdown.addEventListener("change", function(e) {
   const prefCode = e.target.value;
-  console.log(prefCode);
+  getPrefData(
+    `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
+  ).then(data => {
+    let population = data.result.data[0].data;
+    // call the function loadChart to insert data.result.bar.data into graph
+    console.log(population);
+  });
 });
 
 // Fake graph data
@@ -62,7 +88,5 @@ const chart = new Chart(ctx, {
       }
     ]
   },
-
-  // Configuration options go here
   options: {}
 });
