@@ -82,8 +82,8 @@ const chart = new Chart(ctx, {
     datasets: [
       {
         label: "Fake data",
-        backgroundColor: "#ffa3b7",
-        borderColor: "#ffa3b7",
+        backgroundColor: "rgba(255, 130, 153, 0.2)",
+        borderColor: "rgba(255, 130, 153)",
         data: [0, 10, 5, 2, 20, 30, 35]
       }
     ]
