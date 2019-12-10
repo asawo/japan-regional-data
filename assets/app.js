@@ -99,7 +99,7 @@ const chart = new Chart(ctx, {
     datasets: [
       {
         label: ["Population"],
-        backgroundColor: "rgba(255, 130, 153, 0.2)",
+        backgroundColor: "rgba(255, 130, 153, 0.4)",
         borderColor: "rgba(255, 130, 153)",
         data: []
       }
