@@ -15,11 +15,10 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // Function to get prefecture list
 async function getPrefList(url) {
-  let response = await fetch(url, {
+  const response = await fetch(url, {
     headers: headerEnv
   });
-  let data = await response.json();
-  return data;
+  return await response.json();
 }
 
 // Load prefectures into dropdown list
@@ -42,7 +41,7 @@ getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
     getPrefData(
       "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1"
     ).then(data => {
-      let population = data.result.data[0].data;
+      const population = data.result.data[0].data;
 
       loadChart(population);
     });
@@ -51,27 +50,24 @@ getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
 
 // Get prefecture data
 async function getPrefData(url) {
-  let response = await fetch(url, {
+  const response = await fetch(url, {
     headers: headerEnv
   });
-  let data = await response.json();
-  return data;
+  return await response.json();
 }
 
 // Load prefecture data into chart
 function loadChart(data) {
-  let years = [];
+  const years = [];
   data.forEach(year => years.push(year.year));
 
-  let populationData = [];
+  const populationData = [];
   data.forEach(population => populationData.push(population.value));
 
   chart.config.data.labels = years;
   chart.config.data.datasets[0].data = populationData;
 
   chart.chart.update();
-
-  // console.log(chart.config.data);
 }
 
 // Event listeners
@@ -80,17 +76,13 @@ prefectureDropdown.addEventListener("change", function(e) {
   getPrefData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
   ).then(data => {
-    let population = data.result.data[0].data;
+    const population = data.result.data[0].data;
 
     loadChart(population);
   });
 });
 
-window.addEventListener("load", event => {
-  console.log();
-});
-
-// Fake graph data
+// Initial graph
 const ctx = document.getElementById("myChart").getContext("2d");
 const chart = new Chart(ctx, {
   type: "bar",
