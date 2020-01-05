@@ -13,17 +13,7 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // 3. Make a get request to RESAS API ✅
 
-// Function to get prefecture list
-async function getPrefList(url) {
-  const response = await fetch(url, {
-    headers: headerEnv
-  });
-  return await response.json();
-}
-
 // Load prefectures into dropdown list
-const prefectureDropdown = document.querySelector("#prefectureDropdown");
-
 function loadDropdown(data) {
   const prefectures = data.result
     .map(
@@ -33,20 +23,6 @@ function loadDropdown(data) {
     .join("\n");
   return `<select>${prefectures}</select>`;
 }
-
-getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
-  data => {
-    prefectureDropdown.innerHTML = loadDropdown(data);
-    // populate graph with initial data
-    getPrefData(
-      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1"
-    ).then(data => {
-      const population = data.result.data[0].data;
-
-      loadChart(population);
-    });
-  }
-);
 
 // Get prefecture data
 async function getPrefData(url) {
@@ -64,13 +40,35 @@ function loadChart(data) {
   const populationData = [];
   data.forEach(population => populationData.push(population.value));
 
-  chart.config.data.labels = years;
-  chart.config.data.datasets[0].data = populationData;
+  populationTrend.config.data.labels = years;
+  populationTrend.config.data.datasets[0].data = populationData;
 
-  chart.chart.update();
+  populationTrend.chart.update();
 }
 
-// Event listeners
+const prefectureDropdown = document.querySelector("#prefectureDropdown");
+
+async function getPrefList(url) {
+  const response = await fetch(url, {
+    headers: headerEnv
+  });
+  return await response.json();
+}
+
+getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
+  data => {
+    prefectureDropdown.innerHTML = loadDropdown(data);
+    // populate graph with initial data
+    getPrefData(
+      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1"
+    ).then(data => {
+      const population = data.result.data[0].data;
+
+      loadChart(population);
+    });
+  }
+);
+
 prefectureDropdown.addEventListener("change", function(e) {
   const prefCode = e.target.value;
   getPrefData(
@@ -83,8 +81,8 @@ prefectureDropdown.addEventListener("change", function(e) {
 });
 
 // Initial graph
-const ctx = document.getElementById("myChart").getContext("2d");
-const chart = new Chart(ctx, {
+const popChart = document.getElementById("populationChart").getContext("2d");
+const populationTrend = new Chart(popChart, {
   type: "bar",
   data: {
     labels: [],
@@ -94,6 +92,39 @@ const chart = new Chart(ctx, {
         backgroundColor: "rgba(255, 130, 153, 0.4)",
         borderColor: "rgba(255, 130, 153)",
         data: []
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    hover: {
+      mode: "label"
+    },
+    scales: {
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    },
+    maintainAspectRatio: true
+  }
+});
+
+const gaijinChart = document.getElementById("gaijinChart").getContext("2d");
+const gaijinTrends = new Chart(gaijinChart, {
+  type: "bar",
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: ["Diversity Trend"],
+        backgroundColor: "rgba(255, 130, 153, 0.4)",
+        borderColor: "rgba(255, 130, 153)",
+        data: [1, 2]
       }
     ]
   },
