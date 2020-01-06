@@ -24,23 +24,15 @@ function loadDropdown(data) {
   return `<select>${prefectures}</select>`;
 }
 
-// Get prefecture data
-async function getPrefData(url) {
+// Get data from RESAS
+async function getData(url) {
   const response = await fetch(url, {
     headers: headerEnv
   });
   return await response.json();
 }
 
-// Get diversity data
-async function getDiversityData(url) {
-  const response = await fetch(url, {
-    headers: headerEnv
-  });
-  return await response.json();
-}
-
-// Load prefecture data into chart
+// Load prefecture population data into chart
 function loadPopChart(data) {
   const years = [];
   data.forEach(year => years.push(year.year));
@@ -59,13 +51,42 @@ function loadDiversityChart(data) {
   const countries = [];
   data.forEach(country => countries.push(country.countryName));
 
+  // need to sum population per country per year here before inserting into chart
   const visitorPopulation = [];
-  data.forEach(population => visitorPopulation.push(population));
+  const visitorPopulation2 = [];
 
-  // populationTrend.config.data.labels = countries;
-  // populationTrend.config.data.datasets[0].data = visitorPopulation;
+  data.forEach(numberOfVisitors => {
+    visitorPopulation.push(
+      numberOfVisitors.data.forEach(year => visitorPopulation2.push(year.value))
+    );
+    console.log(visitorPopulation2);
+  });
 
-  populationTrend.chart.update();
+  diversityTrend.config.data.labels = countries;
+  diversityTrend.config.data.datasets[0].data = visitorPopulation;
+
+  diversityTrend.chart.update();
+}
+
+let prefCode = 1;
+let year = 2011;
+
+function loadCharts() {
+  getData(
+    `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
+  ).then(data => {
+    const population = data.result.data[0].data;
+    console.log(population);
+    loadPopChart(population);
+  });
+
+  getData(
+    `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
+  ).then(data => {
+    const diversity = data.result.changes;
+    console.log(diversity);
+    loadDiversityChart(diversity);
+  });
 }
 
 const prefectureDropdown = document.querySelector("#prefectureDropdown");
@@ -78,56 +99,26 @@ async function getPrefList(url) {
   return await response.json();
 }
 
-let prefCode = 1;
-let year = 2011;
-
 getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
   data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
-    // populate graph with initial data
-    getPrefData(
-      `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
-    ).then(data => {
-      const population = data.result.data[0].data;
-
-      loadPopChart(population);
-    });
-
-    getDiversityData(
-      `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
-    ).then(data => {
-      const diversity = data.result.changes;
-      console.log(diversity);
-      loadDiversityChart(diversity);
-    });
+    loadCharts();
   }
 );
 
 // Event Listeners on Dropdown menus
 prefectureDropdown.addEventListener("change", function(e) {
   prefCode = e.target.value;
-  console.log("selected prefCode is " + prefCode);
+  console.log("Selected prefCode is " + prefCode);
 
-  getPrefData(
-    `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
-  ).then(data => {
-    const population = data.result.data[0].data;
-
-    loadPopChart(population);
-  });
+  loadCharts();
 });
 
 yearDropdown.addEventListener("change", function(e) {
   year = e.target.selectedOptions[0].label;
   console.log("Selected year is " + year);
 
-  getDiversityData(
-    `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
-  ).then(data => {
-    const diversity = data.result.changes;
-    console.log(diversity);
-    loadDiversityChart(diversity);
-  });
+  loadCharts();
 });
 
 // Initial graph
@@ -178,7 +169,7 @@ console.log(randomColours());
 const diversityChart = document
   .getElementById("diversityChart")
   .getContext("2d");
-const diversityTrends = new Chart(diversityChart, {
+const diversityTrend = new Chart(diversityChart, {
   type: "doughnut",
   data: {
     datasets: [
