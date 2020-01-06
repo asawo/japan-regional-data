@@ -56,19 +56,20 @@ function loadPopChart(data) {
 
 // Load diversity data into chart
 function loadDiversityChart(data) {
-  const years = [];
-  data.forEach(year => years.push(year.year));
+  const countries = [];
+  data.forEach(country => countries.push(country.countryName));
 
-  const populationData = [];
-  data.forEach(population => populationData.push(population.value));
+  const visitorPopulation = [];
+  data.forEach(population => visitorPopulation.push(population));
 
-  populationTrend.config.data.labels = years;
-  populationTrend.config.data.datasets[0].data = populationData;
+  // populationTrend.config.data.labels = countries;
+  // populationTrend.config.data.datasets[0].data = visitorPopulation;
 
   populationTrend.chart.update();
 }
 
 const prefectureDropdown = document.querySelector("#prefectureDropdown");
+const yearDropdown = document.querySelector("#yearDropdown");
 
 async function getPrefList(url) {
   const response = await fetch(url, {
@@ -77,34 +78,55 @@ async function getPrefList(url) {
   return await response.json();
 }
 
+let prefCode = 1;
+let year = 2011;
+
 getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
   data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
     // populate graph with initial data
     getPrefData(
-      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1"
+      `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
     ).then(data => {
       const population = data.result.data[0].data;
 
       loadPopChart(population);
+    });
 
-      getDiversityData(
-        "https://opendata.resas-portal.go.jp/api/v1/tourism/correlation/forCircle?year=2016&halfPeriod=1&prefCode=1"
-      );
+    getDiversityData(
+      `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
+    ).then(data => {
+      const diversity = data.result.changes;
+      console.log(diversity);
+      loadDiversityChart(diversity);
     });
   }
 );
 
+// Event Listeners on Dropdown menus
 prefectureDropdown.addEventListener("change", function(e) {
-  const prefCode = e.target.value;
+  prefCode = e.target.value;
+  console.log("selected prefCode is " + prefCode);
+
   getPrefData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
   ).then(data => {
     const population = data.result.data[0].data;
 
     loadPopChart(population);
+  });
+});
 
-    getDiversityData;
+yearDropdown.addEventListener("change", function(e) {
+  year = e.target.selectedOptions[0].label;
+  console.log("Selected year is " + year);
+
+  getDiversityData(
+    `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
+  ).then(data => {
+    const diversity = data.result.changes;
+    console.log(diversity);
+    loadDiversityChart(diversity);
   });
 });
 
@@ -142,21 +164,31 @@ const populationTrend = new Chart(popChart, {
   }
 });
 
+let pieColours = [];
+
+const randomColours = function() {
+  const r = Math.floor(Math.random() * 255);
+  const g = Math.floor(Math.random() * 255);
+  const b = Math.floor(Math.random() * 255);
+  return "rgb(" + r + "," + g + "," + b + ")";
+};
+
+console.log(randomColours());
+
 const diversityChart = document
   .getElementById("diversityChart")
   .getContext("2d");
 const diversityTrends = new Chart(diversityChart, {
   type: "doughnut",
   data: {
-    labels: [],
     datasets: [
       {
         label: ["Diversity Trend"],
-        backgroundColor: "rgba(255, 130, 153, 0.4)",
-        borderColor: "rgba(255, 130, 153)",
-        data: [1]
+        backgroundColor: pieColours,
+        data: [1, 2, 3]
       }
-    ]
+    ],
+    labels: ["Pref 1", "Pref 2", "Pref 3"]
   },
   options: {
     responsive: true,
