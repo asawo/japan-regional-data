@@ -20,6 +20,7 @@
       </div>
     </nav>
 
+    <!-- Prefecture Population Chart -->
     <div class="container-fluid mt-3 w-50">
       <select
         class="custom-select"
@@ -34,8 +35,15 @@
       <canvas id="populationChart"></canvas>
     </div>
 
+    <!-- Prefecture Diversity Chart -->
+    <div class="container-fluid mt-3 w-50">
+      <select class="custom-select" id="yearSelector" name="Select year">
+        <option value="1">Loading...</option>
+      </select>
+    </div>
+
     <div class="text-center my-3 container" id="graph">
-      <canvas id="gaijinChart"></canvas>
+      <canvas id="diversityChart"></canvas>
     </div>
 
     <footer class="mt-5 p-3 text-center bg-light">

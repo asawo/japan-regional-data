@@ -32,8 +32,30 @@ async function getPrefData(url) {
   return await response.json();
 }
 
+// Get diversity data
+async function getDiversityData(url) {
+  const response = await fetch(url, {
+    headers: headerEnv
+  });
+  return await response.json();
+}
+
 // Load prefecture data into chart
-function loadChart(data) {
+function loadPopChart(data) {
+  const years = [];
+  data.forEach(year => years.push(year.year));
+
+  const populationData = [];
+  data.forEach(population => populationData.push(population.value));
+
+  populationTrend.config.data.labels = years;
+  populationTrend.config.data.datasets[0].data = populationData;
+
+  populationTrend.chart.update();
+}
+
+// Load diversity data into chart
+function loadDiversityChart(data) {
   const years = [];
   data.forEach(year => years.push(year.year));
 
@@ -64,7 +86,11 @@ getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
     ).then(data => {
       const population = data.result.data[0].data;
 
-      loadChart(population);
+      loadPopChart(population);
+
+      getDiversityData(
+        "https://opendata.resas-portal.go.jp/api/v1/tourism/correlation/forCircle?year=2016&halfPeriod=1&prefCode=1"
+      );
     });
   }
 );
@@ -76,7 +102,9 @@ prefectureDropdown.addEventListener("change", function(e) {
   ).then(data => {
     const population = data.result.data[0].data;
 
-    loadChart(population);
+    loadPopChart(population);
+
+    getDiversityData;
   });
 });
 
@@ -114,9 +142,11 @@ const populationTrend = new Chart(popChart, {
   }
 });
 
-const gaijinChart = document.getElementById("gaijinChart").getContext("2d");
-const gaijinTrends = new Chart(gaijinChart, {
-  type: "bar",
+const diversityChart = document
+  .getElementById("diversityChart")
+  .getContext("2d");
+const diversityTrends = new Chart(diversityChart, {
+  type: "doughnut",
   data: {
     labels: [],
     datasets: [
@@ -124,7 +154,7 @@ const gaijinTrends = new Chart(gaijinChart, {
         label: ["Diversity Trend"],
         backgroundColor: "rgba(255, 130, 153, 0.4)",
         borderColor: "rgba(255, 130, 153)",
-        data: [1, 2]
+        data: [1]
       }
     ]
   },
@@ -132,16 +162,6 @@ const gaijinTrends = new Chart(gaijinChart, {
     responsive: true,
     hover: {
       mode: "label"
-    },
-    scales: {
-      yAxes: [
-        {
-          display: true,
-          ticks: {
-            beginAtZero: true
-          }
-        }
-      ]
     },
     maintainAspectRatio: true
   }
