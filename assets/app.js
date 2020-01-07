@@ -59,11 +59,12 @@ function loadDiversityChart(data) {
     visitorPopulation.push(
       numberOfVisitors.data.forEach(year => visitorPopulation2.push(year.value))
     );
-    console.log(visitorPopulation2);
   });
 
+  console.log(visitorPopulation2);
+
   diversityTrend.config.data.labels = countries;
-  diversityTrend.config.data.datasets[0].data = visitorPopulation;
+  diversityTrend.config.data.datasets[0].data = visitorPopulation2;
 
   diversityTrend.chart.update();
 }
@@ -71,6 +72,7 @@ function loadDiversityChart(data) {
 let prefCode = 1;
 let year = 2011;
 
+// Note: should split up this function so I don't reload both charts when changing the year for diversityChart
 function loadCharts() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
@@ -179,7 +181,7 @@ const diversityTrend = new Chart(diversityChart, {
         data: [1, 2, 3]
       }
     ],
-    labels: ["Pref 1", "Pref 2", "Pref 3"]
+    labels: ["Loading..."]
   },
   options: {
     responsive: true,
