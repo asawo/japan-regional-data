@@ -61,8 +61,15 @@ function loadDiversityChart(data) {
     sum = 0;
   });
 
+  // Calculate total foreigner population, if it's below x% of total, aggregate into "other" label to make it easier to read the chart
+
+  let totalForeignPopulation = 0;
+  visitorPopulation.forEach(country => (totalForeignPopulation += country));
+  console.log("total number of foreigners: " + totalForeignPopulation);
+
   diversityTrend.config.data.labels = countries;
   diversityTrend.config.data.datasets[0].data = visitorPopulation;
+  // diversityTrend.config.data.datasets[0].backgroundColor = randomColours;
 
   diversityTrend.chart.update();
 }
@@ -107,15 +114,11 @@ getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
 // Event Listeners on Dropdown menus
 prefectureDropdown.addEventListener("change", function(e) {
   prefCode = e.target.value;
-  console.log("Selected prefCode is " + prefCode);
-
   loadCharts();
 });
 
 yearDropdown.addEventListener("change", function(e) {
   year = e.target.selectedOptions[0].label;
-  console.log("Selected year is " + year);
-
   loadCharts();
 });
 
@@ -124,7 +127,7 @@ const popChart = document.getElementById("populationChart").getContext("2d");
 const populationTrend = new Chart(popChart, {
   type: "bar",
   data: {
-    labels: [],
+    labels: ["Loading..."],
     datasets: [
       {
         label: ["Population"],
@@ -154,13 +157,11 @@ const populationTrend = new Chart(popChart, {
 });
 
 const randomColours = function() {
-  const r = Math.floor(Math.random() * 255);
+  const r = 255;
   const g = Math.floor(Math.random() * 255);
   const b = Math.floor(Math.random() * 255);
   return "rgb(" + r + "," + g + "," + b + ", 0.4)";
 };
-
-console.log(randomColours());
 
 const diversityChart = document
   .getElementById("diversityChart")
@@ -179,7 +180,7 @@ const diversityTrend = new Chart(diversityChart, {
   },
   options: {
     legend: {
-      display: false
+      display: true
     },
     responsive: true,
     hover: {
