@@ -53,13 +53,13 @@ function loadDiversityChart(data) {
 
   // need to sum population per country per year here before inserting into chart
   const visitorPopulation = [];
+  let sum = 0;
 
-  data.forEach(numberOfVisitors => {
-    numberOfVisitors.data.forEach(year => visitorPopulation.push(year.value));
-    // write function to calculate sum of each array in year
+  data.forEach(country => {
+    country.data.forEach(quarter => (sum += quarter.value));
+    visitorPopulation.push(sum);
+    sum = 0;
   });
-
-  console.log(visitorPopulation);
 
   diversityTrend.config.data.labels = countries;
   diversityTrend.config.data.datasets[0].data = visitorPopulation;
@@ -153,13 +153,11 @@ const populationTrend = new Chart(popChart, {
   }
 });
 
-let pieColours = [];
-
 const randomColours = function() {
   const r = Math.floor(Math.random() * 255);
   const g = Math.floor(Math.random() * 255);
   const b = Math.floor(Math.random() * 255);
-  return "rgb(" + r + "," + g + "," + b + ")";
+  return "rgb(" + r + "," + g + "," + b + ", 0.4)";
 };
 
 console.log(randomColours());
@@ -173,13 +171,16 @@ const diversityTrend = new Chart(diversityChart, {
     datasets: [
       {
         label: ["Diversity Trend"],
-        backgroundColor: pieColours,
+        backgroundColor: randomColours,
         data: [0]
       }
     ],
     labels: ["Loading..."]
   },
   options: {
+    legend: {
+      display: false
+    },
     responsive: true,
     hover: {
       mode: "label"
