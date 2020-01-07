@@ -53,18 +53,16 @@ function loadDiversityChart(data) {
 
   // need to sum population per country per year here before inserting into chart
   const visitorPopulation = [];
-  const visitorPopulation2 = [];
 
   data.forEach(numberOfVisitors => {
-    visitorPopulation.push(
-      numberOfVisitors.data.forEach(year => visitorPopulation2.push(year.value))
-    );
+    numberOfVisitors.data.forEach(year => visitorPopulation.push(year.value));
+    // write function to calculate sum of each array in year
   });
 
-  console.log(visitorPopulation2);
+  console.log(visitorPopulation);
 
   diversityTrend.config.data.labels = countries;
-  diversityTrend.config.data.datasets[0].data = visitorPopulation2;
+  diversityTrend.config.data.datasets[0].data = visitorPopulation;
 
   diversityTrend.chart.update();
 }
@@ -78,7 +76,6 @@ function loadCharts() {
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
   ).then(data => {
     const population = data.result.data[0].data;
-    console.log(population);
     loadPopChart(population);
   });
 
@@ -86,7 +83,6 @@ function loadCharts() {
     `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
   ).then(data => {
     const diversity = data.result.changes;
-    console.log(diversity);
     loadDiversityChart(diversity);
   });
 }
@@ -178,7 +174,7 @@ const diversityTrend = new Chart(diversityChart, {
       {
         label: ["Diversity Trend"],
         backgroundColor: pieColours,
-        data: [1, 2, 3]
+        data: [0]
       }
     ],
     labels: ["Loading..."]
