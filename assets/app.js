@@ -167,11 +167,11 @@ const diversityChart = document
   .getElementById("diversityChart")
   .getContext("2d");
 const diversityTrend = new Chart(diversityChart, {
-  type: "doughnut",
+  type: "bar",
   data: {
     datasets: [
       {
-        label: ["Diversity Trend"],
+        label: "Diversity",
         backgroundColor: randomColours,
         data: [0]
       }
