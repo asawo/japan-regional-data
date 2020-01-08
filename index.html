@@ -22,7 +22,7 @@
 
     <!-- Prefecture Population Chart -->
     <div class="text-center mt-5">
-      <h5>Population history per Prefecture</h5>
+      <h5>Population history & estimation per Prefecture</h5>
     </div>
     <div class="container-fluid mt-3 w-50">
       <select
@@ -40,7 +40,7 @@
 
     <!-- Prefecture Diversity Chart -->
     <div class="text-center mt-5">
-      <h5>Prefectural Diversity</h5>
+      <h5>Regional Diversity (residents and visitors per year)</h5>
     </div>
     <div class="container-fluid mt-3 w-50">
       <select class="custom-select" id="yearDropdown" name="Select year">
@@ -54,6 +54,32 @@
         <option value="8">2018</option>
       </select>
     </div>
+
+    <!-- pie/bar toggle switch -->
+    <div class="text-center mt-3">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+          <input
+            type="radio"
+            name="options"
+            id="barSelect"
+            autocomplete="off"
+            checked
+          />
+          Bar
+        </label>
+        <label class="btn btn-secondary">
+          <input
+            type="radio"
+            name="options"
+            id="pieSelect"
+            autocomplete="off"
+          />
+          Pie
+        </label>
+      </div>
+    </div>
+    <!-- pie/bar toggle switch -->
 
     <div class="text-center my-3 container" id="graph">
       <canvas id="diversityChart"></canvas>

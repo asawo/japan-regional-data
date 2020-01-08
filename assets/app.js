@@ -78,14 +78,16 @@ let prefCode = 1;
 let year = 2011;
 
 // Note: should split up this function so I don't reload both charts when changing the year for diversityChart
-function loadCharts() {
+function reloadPopulationChart() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
   ).then(data => {
     const population = data.result.data[0].data;
     loadPopChart(population);
   });
+}
 
+function reloadDiversityChart() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
   ).then(data => {
@@ -107,19 +109,21 @@ async function getPrefList(url) {
 getPrefList("https://opendata.resas-portal.go.jp/api/v1/prefectures").then(
   data => {
     prefectureDropdown.innerHTML = loadDropdown(data);
-    loadCharts();
+    reloadPopulationChart();
+    reloadDiversityChart();
   }
 );
 
 // Event Listeners on Dropdown menus
 prefectureDropdown.addEventListener("change", function(e) {
   prefCode = e.target.value;
-  loadCharts();
+  reloadPopulationChart();
+  reloadDiversityChart();
 });
 
 yearDropdown.addEventListener("change", function(e) {
   year = e.target.selectedOptions[0].label;
-  loadCharts();
+  reloadDiversityChart();
 });
 
 // Initial graph
@@ -180,7 +184,7 @@ const diversityTrend = new Chart(diversityChart, {
   },
   options: {
     legend: {
-      display: true
+      display: false
     },
     responsive: true,
     hover: {
