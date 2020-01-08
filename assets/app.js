@@ -51,7 +51,6 @@ function loadDiversityChart(data) {
   const countries = [];
   data.forEach(country => countries.push(country.countryName));
 
-  // need to sum population per country per year here before inserting into chart
   const visitorPopulation = [];
   let sum = 0;
 
@@ -69,7 +68,6 @@ function loadDiversityChart(data) {
 
   diversityTrend.config.data.labels = countries;
   diversityTrend.config.data.datasets[0].data = visitorPopulation;
-  // diversityTrend.config.data.datasets[0].backgroundColor = randomColours;
 
   diversityTrend.chart.update();
 }
@@ -77,7 +75,6 @@ function loadDiversityChart(data) {
 let prefCode = 1;
 let year = 2011;
 
-// Note: should split up this function so I don't reload both charts when changing the year for diversityChart
 function reloadPopulationChart() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
@@ -124,6 +121,24 @@ prefectureDropdown.addEventListener("change", function(e) {
 yearDropdown.addEventListener("change", function(e) {
   year = e.target.selectedOptions[0].label;
   reloadDiversityChart();
+});
+
+const chartTypeToggle = document.querySelector("#chartTypeToggle");
+let chartType = "bar";
+
+chartTypeToggle.addEventListener("click", function(e) {
+  console.log(e.target.id);
+  if (e.target.id === "barSelect") {
+    chartType = "bar";
+  } else if (e.target.id === "pieSelect") {
+    chartType = "pie";
+    diversityTrend.config.options.scales = [];
+  }
+
+  diversityTrend.config.type = chartType;
+  diversityTrend.chart.update();
+
+  console.log(diversityTrend.config.type);
 });
 
 // Initial graph
