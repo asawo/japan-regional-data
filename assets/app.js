@@ -127,7 +127,6 @@ const chartTypeToggle = document.querySelector("#chartTypeToggle");
 let chartType = "bar";
 
 chartTypeToggle.addEventListener("click", function(e) {
-  console.log(e.target.id);
   if (e.target.id === "barSelect") {
     chartType = "bar";
   } else if (e.target.id === "pieSelect") {
@@ -137,8 +136,6 @@ chartTypeToggle.addEventListener("click", function(e) {
 
   diversityTrend.config.type = chartType;
   diversityTrend.chart.update();
-
-  console.log(diversityTrend.config.type);
 });
 
 // Initial graph
