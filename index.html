@@ -22,7 +22,7 @@
 
     <!-- Prefecture Population Chart -->
     <div class="text-center mt-5">
-      <h5>Population history & estimation per Prefecture</h5>
+      <h5>Regional population history & projection</h5>
     </div>
     <div class="container-fluid mt-3 w-50">
       <select
@@ -41,11 +41,11 @@
     <!-- Prefecture Diversity Chart -->
     <div class="container">
       <div class="text-center mt-5">
-        <h5>Regional Diversity (residents and visitors per year)</h5>
+        <h5>Regional Diversity (residents & visitors)</h5>
       </div>
-      <div class="row justify-content-center">
+      <div class="row justify-content-center  mt-3">
         <div class="col-4">
-          <div class="container-fluid mt-3">
+          <div class="container-fluid">
             <select class="custom-select" id="yearDropdown" name="Select year">
               <option value="1">2011</option>
               <option value="2">2012</option>
@@ -59,32 +59,30 @@
           </div>
         </div>
         <div class="col-3">
-          <div class="mt-3">
-            <div
-              id="chartTypeToggle"
-              class="btn-group btn-group-toggle"
-              data-toggle="buttons"
-            >
-              <label class="btn btn-secondary active">
-                <input
-                  type="radio"
-                  name="options"
-                  id="barSelect"
-                  autocomplete="off"
-                  checked
-                />
-                Bar
-              </label>
-              <label class="btn btn-secondary">
-                <input
-                  type="radio"
-                  name="options"
-                  id="pieSelect"
-                  autocomplete="off"
-                />
-                Pie
-              </label>
-            </div>
+          <div
+            id="chartTypeToggle"
+            class="btn-group btn-group-toggle"
+            data-toggle="buttons"
+          >
+            <label class="btn btn-secondary">
+              <input
+                type="radio"
+                name="options"
+                id="barSelect"
+                autocomplete="off"
+              />
+              Bar
+            </label>
+            <label class="btn btn-secondary active">
+              <input
+                type="radio"
+                name="options"
+                id="pieSelect"
+                autocomplete="off"
+                checked
+              />
+              Pie
+            </label>
           </div>
         </div>
       </div>

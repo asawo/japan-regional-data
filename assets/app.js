@@ -124,7 +124,7 @@ yearDropdown.addEventListener("change", function(e) {
 });
 
 const chartTypeToggle = document.querySelector("#chartTypeToggle");
-let chartType = "bar";
+let chartType = "pie";
 
 chartTypeToggle.addEventListener("click", function(e) {
   if (e.target.id === "barSelect") {
@@ -133,7 +133,6 @@ chartTypeToggle.addEventListener("click", function(e) {
     chartType = "pie";
     diversityTrend.config.options.scales = [];
   }
-
   diversityTrend.config.type = chartType;
   diversityTrend.chart.update();
 });
@@ -154,6 +153,9 @@ const populationTrend = new Chart(popChart, {
     ]
   },
   options: {
+    legend: {
+      display: false
+    },
     responsive: true,
     hover: {
       mode: "label"
@@ -183,7 +185,7 @@ const diversityChart = document
   .getElementById("diversityChart")
   .getContext("2d");
 const diversityTrend = new Chart(diversityChart, {
-  type: "bar",
+  type: "pie",
   data: {
     datasets: [
       {
