@@ -15,7 +15,7 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // Load prefectures into dropdown list
 function loadDropdown(data) {
-  const i18 = {
+  const english = {
     北海道: "Hokkaido",
     青森県: "Aomori",
     岩手県: "Iwate",
@@ -69,7 +69,7 @@ function loadDropdown(data) {
     .map(
       prefs =>
         `<option class="prefecture" value="${prefs.prefCode}">${
-          i18[prefs.prefName]
+          english[prefs.prefName]
         }</option>`
     )
     .join("\n");
