@@ -129,6 +129,28 @@ let chartType = "pie";
 chartTypeToggle.addEventListener("click", function(e) {
   if (e.target.id === "barSelect") {
     chartType = "bar";
+    diversityTrend.config.options.scales = {
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Population"
+          }
+        }
+      ],
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Country"
+          }
+        }
+      ]
+    };
   } else if (e.target.id === "pieSelect") {
     chartType = "pie";
     diversityTrend.config.options.scales = [];
@@ -166,6 +188,18 @@ const populationTrend = new Chart(popChart, {
           display: true,
           ticks: {
             beginAtZero: true
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Population"
+          }
+        }
+      ],
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Year"
           }
         }
       ]
@@ -204,6 +238,7 @@ const diversityTrend = new Chart(diversityChart, {
     hover: {
       mode: "label"
     },
-    maintainAspectRatio: true
+    maintainAspectRatio: true,
+    scales: []
   }
 });
