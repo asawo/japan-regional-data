@@ -11,7 +11,7 @@ const headerEnv = { "X-API-KEY": env.X_API_KEY };
 
 // 2. Extract heroku config vars
 
-// 3. Make a get request to RESAS API ✅
+let language = "english";
 
 // Load prefectures into dropdown list
 function loadDropdown(data) {
@@ -100,8 +100,31 @@ function loadPopChart(data) {
 
 // Load diversity data into chart
 function loadDiversityChart(data) {
+  const english = {
+    大韓民国: "Korea",
+    中華人民共和国: "China",
+    台湾: "Taiwan",
+    香港: "Hong Kong",
+    タイ: "Thailand",
+    シンガポール: "Singapore",
+    マレーシア: "Malaysia",
+    インド: "India",
+    英国: "England",
+    フランス: "France",
+    ドイツ: "Germany",
+    ロシア: "Russia",
+    カナダ: "Canada",
+    アメリカ合衆国: "US",
+    オーストラリア: "Australia",
+    ベトナム: "Vietnam",
+    フィリピン: "Phillipines",
+    インドネシア: "Indonesia",
+    スペイン: "Spain",
+    イタリア: "Italy"
+  };
+
   const countries = [];
-  data.forEach(country => countries.push(country.countryName));
+  data.forEach(country => countries.push(english[country.countryName]));
 
   const visitorPopulation = [];
   let sum = 0;
