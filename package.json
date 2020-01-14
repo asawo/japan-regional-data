@@ -4,8 +4,7 @@
   "description": "A website to explore Japan's regional data provided by [RESAS](https://resas.go.jp)",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.17.1",
-    "node-static": "^0.7.11"
+    "express": "^4.17.1"
   },
   "devDependencies": {},
   "scripts": {
