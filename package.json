@@ -2,7 +2,7 @@
   "name": "resas-japan",
   "version": "1.0.0",
   "description": "A website to explore Japan's regional data provided by [RESAS](https://resas.go.jp)",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
     "node-static": "^0.7.11"
