@@ -22,6 +22,7 @@ It is currently deployed on [Heroku] 💻(https://japan-regional-data.herokuapp.
 ## TODO list
 
 - Toggle between Japanese and English 🌏
+- Categorize small data points into "Other" on the pie chart
 - Refactor API requests to move them to the backend and use config vars (after I learn how) 🔨
 
 ## Special Thanks
