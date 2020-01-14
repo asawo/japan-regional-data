@@ -5,16 +5,11 @@
 // 4. Map the prefecture list to the drop down ✅
 // 5. Map the response into a graph with chart.js
 
-// 1. Extract API key from local file for dev ✅
-// import env from "../env.js";
-const API_KEY = require("../index");
-console.log(API_KEY);
+// For the time being, I've hardcoded API because it's an open API & there are only GET calls due to the scope of this project - will correct once I learn more backend
+const API_KEY = "gwmkmFxh4qd6vPdQyo1y7ZCVurQZhYcc8qAFCwqI";
+const headerEnv = { "X-API-KEY": API_KEY };
 
-const headerEnv = { "X-API-KEY": API_KEY.X_API_KEY };
-
-// 2. Extract heroku config vars
-
-let language = "english";
+// let language = "english";
 
 // Load prefectures into dropdown list
 function loadDropdown(data) {
