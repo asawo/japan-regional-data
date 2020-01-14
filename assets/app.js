@@ -146,6 +146,7 @@ function loadDiversityChart(data) {
 
 let prefCode = 1;
 let year = 2011;
+const errorModal = document.querySelector(".modal");
 
 function reloadPopulationChart() {
   getData(
@@ -155,7 +156,10 @@ function reloadPopulationChart() {
       const population = data.result.data[0].data;
       loadPopChart(population);
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      $("#errorModal").modal("show");
+      console.error(error);
+    });
 }
 
 // Note: can just hardcode error to test
@@ -169,11 +173,7 @@ function reloadDiversityChart() {
       loadDiversityChart(diversity);
     })
     .catch(error => {
-      // diversityTrend.config.data.labels = "unable to fetch data for that year";
-      // diversityTrend.config.data.datasets[0].data =
-      //   "unable to fetch data for that year";
-
-      // diversityTrend.chart.update();
+      $("#errorModal").modal("show");
       console.error(error);
     });
 }
