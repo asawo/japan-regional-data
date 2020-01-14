@@ -15,4 +15,4 @@ require("http")
   })
   .listen(process.env.PORT || 3000);
 
-export default API_KEY;
+module.exports = API_KEY;
