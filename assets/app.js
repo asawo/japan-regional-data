@@ -7,7 +7,7 @@
 
 // 1. Extract API key from local file for dev ✅
 // import env from "../env.js";
-import API_KEY from "../index";
+const API_KEY = require("../index");
 console.log(API_KEY);
 
 const headerEnv = { "X-API-KEY": API_KEY.X_API_KEY };
