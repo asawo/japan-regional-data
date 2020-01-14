@@ -6,8 +6,11 @@
 // 5. Map the response into a graph with chart.js
 
 // 1. Extract API key from local file for dev ✅
-import env from "../env.js";
-const headerEnv = { "X-API-KEY": env.X_API_KEY };
+// import env from "../env.js";
+import API_KEY from "../index";
+console.log(API_KEY);
+
+const headerEnv = { "X-API-KEY": API_KEY.X_API_KEY };
 
 // 2. Extract heroku config vars
 
@@ -152,19 +155,32 @@ let year = 2011;
 function reloadPopulationChart() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${prefCode}`
-  ).then(data => {
-    const population = data.result.data[0].data;
-    loadPopChart(population);
-  });
+  )
+    .then(data => {
+      const population = data.result.data[0].data;
+      loadPopChart(population);
+    })
+    .catch(error => console.error(error));
 }
+
+// Note: can just hardcode error to test
 
 function reloadDiversityChart() {
   getData(
     `https://opendata.resas-portal.go.jp/api/v1/tourism/foreigners/forFrom?purpose=1&year=${year}&prefCode=${prefCode}`
-  ).then(data => {
-    const diversity = data.result.changes;
-    loadDiversityChart(diversity);
-  });
+  )
+    .then(data => {
+      const diversity = data.result.changes;
+      loadDiversityChart(diversity);
+    })
+    .catch(error => {
+      // diversityTrend.config.data.labels = "unable to fetch data for that year";
+      // diversityTrend.config.data.datasets[0].data =
+      //   "unable to fetch data for that year";
+
+      // diversityTrend.chart.update();
+      console.error(error);
+    });
 }
 
 const prefectureDropdown = document.querySelector("#prefectureDropdown");
