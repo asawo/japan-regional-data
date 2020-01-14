@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.use(express.static("index.html"));
+app.use(express.static("assets"));
 
 app.get("/", (req, res) => {
   res.end("Done");
