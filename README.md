@@ -10,16 +10,19 @@ You can also look into the regional diversity for years 2011~2018 for the select
 
 ## Status
 
-WIP. It is currently deployed on [Heroku] 💻(https://japan-regional-data.herokuapp.com/)
+It is currently deployed on [Heroku] 💻(https://japan-regional-data.herokuapp.com/). There's still some things I would like to add in the future, but the app itself is running and functioning.
 
 ## Tech & Tools
-
-Just using
 
 - Vanilla JS 🔨
 - Bootstrap ([Bootswatch Minty Theme](https://bootswatch.com/minty/))
 - HTML5
 - express
+
+## TODO list
+
+- Toggle between Japanese and English 🌏
+- Refactor API requests to move them to the backend and use config vars (after I learn how) 🔨
 
 ## Special Thanks
 
