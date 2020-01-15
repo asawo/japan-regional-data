@@ -1,17 +1,12 @@
 // *** TO DO ***
-// 1. Extract API key from local file for dev ✅
-// 2. Extract heroku config vars
-// 3. Make a get request to RESAS API ✅
-// 4. Map the prefecture list to the drop down ✅
-// 5. Map the response into a graph with chart.js
+// 1. Toggle between English & Japanese
+// 2. Filter small data points into "Other" for pie chart
+// 3. Reroute API request via backend
 
-// For the time being, I've hardcoded API because it's an open API & there are only GET calls due to the scope of this project - will correct once I learn more backend
+// For the time being, I've hardcoded API because it's an open API & there are only GET calls due to the scope of this project - will correct once I learn how to reroute via backend
 const API_KEY = "gwmkmFxh4qd6vPdQyo1y7ZCVurQZhYcc8qAFCwqI";
 const headerEnv = { "X-API-KEY": API_KEY };
 
-// let language = "english";
-
-// Load prefectures into dropdown list
 function loadDropdown(data) {
   const english = {
     北海道: "Hokkaido",
@@ -74,7 +69,6 @@ function loadDropdown(data) {
   return `<select>${prefectures}</select>`;
 }
 
-// Get data from RESAS
 async function getData(url) {
   const response = await fetch(url, {
     headers: headerEnv
@@ -82,7 +76,6 @@ async function getData(url) {
   return await response.json();
 }
 
-// Load prefecture population data into chart
 function loadPopChart(data) {
   const years = [];
   data.forEach(year => years.push(year.year));
@@ -96,7 +89,6 @@ function loadPopChart(data) {
   populationTrend.chart.update();
 }
 
-// Load diversity data into chart
 function loadDiversityChart(data) {
   const english = {
     大韓民国: "Korea",
@@ -133,11 +125,6 @@ function loadDiversityChart(data) {
     sum = 0;
   });
 
-  // TODO: Calculate total foreigner population, if it's below x% of total, aggregate into "other" label to make it easier to read the chart
-  // let totalForeignPopulation = 0;
-  // visitorPopulation.forEach(country => (totalForeignPopulation += country));
-  // console.log("total number of foreigners: " + totalForeignPopulation);
-
   diversityTrend.config.data.labels = countries;
   diversityTrend.config.data.datasets[0].data = visitorPopulation;
 
@@ -146,7 +133,6 @@ function loadDiversityChart(data) {
 
 let prefCode = 1;
 let year = 2011;
-const errorModal = document.querySelector(".modal");
 
 function reloadPopulationChart() {
   getData(
@@ -161,8 +147,6 @@ function reloadPopulationChart() {
       console.error(error);
     });
 }
-
-// Note: can just hardcode error to test
 
 function reloadDiversityChart() {
   getData(
@@ -208,15 +192,6 @@ yearDropdown.addEventListener("change", function(e) {
   reloadDiversityChart();
 });
 
-// TODO: Switch languages on the dropdown menu
-// let language = "english";
-// const languageToggle = document.querySelector("#languageToggle");
-
-// languageToggle.addEventListener("click", function(e) {
-//   console.log(e);
-// });
-
-// toggle between pie and bar charts
 const chartTypeToggle = document.querySelector("#chartTypeToggle");
 let chartType = "pie";
 
@@ -253,7 +228,6 @@ chartTypeToggle.addEventListener("click", function(e) {
   diversityTrend.chart.update();
 });
 
-// Initial graph
 const popChart = document.getElementById("populationChart").getContext("2d");
 const populationTrend = new Chart(popChart, {
   type: "bar",
